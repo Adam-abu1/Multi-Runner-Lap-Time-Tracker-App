@@ -15,24 +15,25 @@ class Race {
     constructor(runners) {
         this.runners = runners;
         this.racing = false;
-        this.raceEndTime = null;
-        this.totalDuration = null;
-
     }
 
     startRace() {
         this.startTime = new Date();
         this.racing = true;
-
+        this.runners.forEach((runner) => {
+            runner.latestLapStartTime = this.startTime;
+        });
     }
 
     endRace() {
-        this.RaceEndTime = new Date()
+        this.raceEndTime = new Date();
+        this.totalDuration = this.raceEndTime - this.startTime;
+
     }
 
     resetRace() {
         this.runners = [];
-        this.startTime = this.RaceEndTime = null
+        this.startTime = this.raceEndTime = null
     }
 }
 
@@ -40,11 +41,11 @@ class Runner {
     constructor(name) {
         this.name = name;
         this.currentLap = 1;
-        this.totalRunDuration = null;
+        this.totalRunDuration = 0;
         this.avgLapTime = null;
         this.lapHistory = [];
         this.fastestLap = null;
-        this.latestapStartTime = null;
+        this.latestLapStartTime = null;
     }
 
     /**
@@ -56,22 +57,24 @@ class Runner {
 
     /**
      * Calculates time taken to run the lap
-     * @return {string}
+     * @return {number}
      */
     calculateLatestLaptime() {
-        return timeFormat(new Date() - this.latestapStartTime);
+        return new Date() - this.latestLapStartTime;
     }
 
     /**
      * Adding the most recent Lap to the runner's history and incrementing the lap.
      * Lap info includes the lap number and time taken to run it
+     * Will also recalculate the the avg lap time
      */
     finishLap() {
         this.lapHistory.push({
             lapNumber: this.currentLap,
-            time: timeFormat(this.calculateLatestLaptime())
+            time: this.calculateLatestLaptime()
         });
 
+        this.calculateAvgLapTime();
         this.currentLap++;
     }
 
@@ -79,15 +82,19 @@ class Runner {
      * The time taken for their last lap
      * @return {string}
      */
-    get finalLapTime() {
+    get lastLapTime() {
         return this.lapHistory[this.lapHistory.length - 1].time;
     }
 
     /**
      * Retrieves the total run time formatted in mm:ss.sss
-     * @return {string}
+     * @return {number}
      */
     get totalDuration() {
-        return timeFormat(this.totalRunDuration);
+        this.lapHistory.forEach(lap => {
+            this.totalRunDuration += lap.time;
+        })
+
+        return this.totalRunDuration;
     }
 }
