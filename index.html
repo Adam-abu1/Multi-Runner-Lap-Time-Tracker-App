@@ -2,13 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Multi-Runner Lap Time Tracker</title>
-    <link rel="stylesheet" href="./css/bootstrap.css">
-    <script src="./js/bootstrap.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="./main.js"></script>
 </head>
-<body>
-<main class="container">
-    <button class="align-content-center">Hello World</button>
+<body id="multi-runner-lap-time-tracker">
+<h1>Multi Runner Lap Time Tracker</h1>
+<main>
+    <div class="input-and-results-info">
+        <div class="input-and-buttons">
+            <input type="text" class="form-control" id="inputName">
+            <button id="addRunner" class="btn btn-primary col-12">Add Runner</button>
+            <button id="startButton" class="btn btn-success col-12">Start Race</button>
+            <button id="endButton" class="btn btn-danger col-12">Add Runner</button>
+        </div>
+        <div class="winner-podium">
+            <div class="winner-name">
+                <span id="raceWinner"></span>
+                <span>1st Place</span>
+            </div>
+            <div class="total-laps">
+                <span id="winnerLaps"></span>
+                <span>Total Laps</span>
+            </div>
+            <div class="average-time">
+                <span id="winnersAverage"></span>
+                <span>Average Lap Time</span>
+            </div>
+        </div>
+        <div class="fastest-lap-info">
+            <div class="fastest-lapper-name">
+                <span id="fastestName"></span>
+                <span>Name</span>
+            </div>
+            <div class="fastest-lap-number">
+                <span id="fastestLap"></span>
+                <span>Fastest Lap Number</span>
+            </div>
+            <div class="fastest-lap-time">
+                <span id="fastestTime"></span>
+                <span>Lap Completed Time</span>
+            </div>
+        </div>
+    </div>
+    <div class="active-race-info">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Lap Count</th>
+                        <th scope="col">Total Time</th>
+                        <th scope="col">Average Time</th>
+                        <th scope="col">Last Lap Time</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
 </main>
 </body>
 </html>

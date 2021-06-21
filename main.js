@@ -11,6 +11,46 @@ function timeFormat(duration) {
     return (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds + '.' + (milliseconds >= 10 && milliseconds < 100 ? '0' : '') + (milliseconds < 10 ? '00' : '') + milliseconds;
 }
 
+class Application {
+    constructor() {
+        this.race = new Race();
+        this.race.resetRace();
+    }
+
+    controls() {
+    }
+
+    details() {
+    }
+
+    getFinalResults() {
+    }
+
+    addRunner() {
+        const runnerInput = document.getElementById('inputName');
+
+        if (!this.race.Racing && runnerInput.value) {
+            this.race.runners.push(
+                new Runner(runnerInput.value)
+            );
+
+            document.getElementById('startButton').disabled = false;
+        }
+
+        // Clearing of the input field
+        runnerInput.value = '';
+        runnerInput.focus();
+    }
+
+    startRace() {
+
+    }
+
+    endRace() {
+
+    }
+}
+
 class Race {
     constructor(runners) {
         this.runners = runners;
@@ -34,6 +74,32 @@ class Race {
     resetRace() {
         this.runners = [];
         this.startTime = this.raceEndTime = null
+    }
+
+    /**
+     * Compares all the best times of each runner and picks out the fastest lap
+     */
+    getFastestLap() {
+        const runnerBestLaps = [];
+        this.runners.forEach(runner => {
+            runnerBestLaps.push({
+                name: runner.name,
+                lapData: runner.fastestLap
+            });
+        })
+
+        const times = [];
+        runnerBestLaps.forEach(runnerInfo => {
+            times.push(runnerInfo.lapData.time)
+        });
+
+        this.fastestLap = runnerBestLaps.find(runnerInfo => {
+            return runnerInfo.lapData.time === Math.max(...times);
+        });
+    }
+
+    finalResults() {
+        this.getFastestLap();
     }
 }
 
@@ -84,6 +150,21 @@ class Runner {
      */
     get lastLapTime() {
         return this.lapHistory[this.lapHistory.length - 1].time;
+    }
+
+    /**
+    * Finds the fastest lap ran
+    * @return {object|undefined}
+    */
+    get fastestLap() {
+        const times = [];
+        this.lapHistory.forEach(lap => {
+            times.push(lap.time);
+        });
+
+        return this.lapHistory.find(lap => {
+            return lap.time === Math.max(...times)
+        });
     }
 
     /**

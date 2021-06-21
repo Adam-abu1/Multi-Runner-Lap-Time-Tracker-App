@@ -1,0 +1,46 @@
+#multi-runner-lap-time-tracker {
+    background-color: #FaF0E6 ;
+}
+h1 {
+    text-align: center;
+}
+main {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 2vw;
+    row-gap: 50px;
+}
+
+@media screen and (min-width: 800px) {
+    main {
+        grid-template-columns: 1fr 3fr;
+        column-gap: 20px;
+    }
+}
+.input-and-results-info {
+    padding: 5px;
+    border: #808080 2px solid;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.input-and-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.winner-podium, .fastest-lap-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr;
+}
+
+.winner-podium, .fastest-lap-info  div:first-child {
+    grid-column-start: 2;
+    grid-column-end: span 2;
+}
+
+button {
+    opacity: 0.9;
+}
