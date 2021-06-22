@@ -15,37 +15,37 @@
 <main>
     <div class="input-and-results-info">
         <div class="input-and-buttons">
-            <input type="text" class="form-control" id="inputName">
+            <input id="inputName" type="text" class="form-control" placeholder="Input runner's name">
             <button id="addRunner" class="btn btn-primary col-12">Add Runner</button>
-            <button id="startButton" class="btn btn-success col-12">Start Race</button>
-            <button id="endButton" class="btn btn-danger col-12">Add Runner</button>
+            <button id="startButton" class="btn btn-success col-12" disabled>Start Race</button>
+            <button id="endButton" class="btn btn-danger col-12" disabled>End Race</button>
         </div>
         <div class="winner-podium">
             <div class="winner-name">
+                <span>Winner</span>
                 <span id="raceWinner"></span>
-                <span>1st Place</span>
             </div>
             <div class="total-laps">
-                <span id="winnerLaps"></span>
                 <span>Total Laps</span>
+                <span id="winnerLaps"></span>
             </div>
             <div class="average-time">
-                <span id="winnersAverage"></span>
                 <span>Average Lap Time</span>
+                <span id="winnersRunDuration"></span>
             </div>
         </div>
         <div class="fastest-lap-info">
             <div class="fastest-lapper-name">
+                <span>Fastest Lap Runner</span>
                 <span id="fastestName"></span>
-                <span>Name</span>
             </div>
             <div class="fastest-lap-number">
-                <span id="fastestLap"></span>
                 <span>Fastest Lap Number</span>
+                <span id="fastestLap"></span>
             </div>
             <div class="fastest-lap-time">
+                <span>Fastest Lap Time</span>
                 <span id="fastestTime"></span>
-                <span>Lap Completed Time</span>
             </div>
         </div>
     </div>
@@ -61,7 +61,9 @@
                         <th scope="col">Last Lap Time</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody id="tableBody">
+                    <tr></tr>
+                </tbody>
             </table>
         </div>
     </div>

@@ -19,7 +19,8 @@ main {
 }
 .input-and-results-info {
     padding: 5px;
-    border: #808080 2px solid;
+    border: #808080 4px solid;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -32,13 +33,28 @@ main {
 
 .winner-podium, .fastest-lap-info {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1fr 1fr;
 }
 
-.winner-podium, .fastest-lap-info  div:first-child {
-    grid-column-start: 2;
-    grid-column-end: span 2;
+.winner-podium div:first-child, .fastest-lap-info  div:first-child {
+    text-align: center;
+    grid-column-start: span 4;
+    /*grid-column-end: ;*/
+}
+
+.winner-podium div:not(:first-child), .fastest-lap-info  div:not(:first-child) {
+    text-align: center;
+    grid-column-start:  span 2;
+    /*grid-column-end:;*/
+}
+
+.winner-podium span, .fastest-lap-info span {
+    display: block;
+}
+
+.winner-podium span:nth-child(2), .fastest-lap-info span:nth-child(2) {
+
 }
 
 button {
