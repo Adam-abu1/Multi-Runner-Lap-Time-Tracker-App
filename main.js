@@ -11,10 +11,11 @@ function timeFormat(duration) {
     return (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds + '.' + (milliseconds >= 10 && milliseconds < 100 ? '0' : '') + (milliseconds < 10 ? '00' : '') + milliseconds;
 }
 
-window.addEventListener('DOMContentLoaded', function(){
+window.addEventListener('DOMContentLoaded', function () {
     app = new Application();
     app.enableButtonControls();
 });
+
 class Application {
     constructor() {
         this.race = new Race();
@@ -27,20 +28,20 @@ class Application {
             btnStr = document.getElementById('startButton'),
             btnEnd = document.getElementById('endButton');
 
-        inputName.addEventListener('keyup', function(evt){
+        inputName.addEventListener('keyup', function (evt) {
             evt.preventDefault();
             // Number 13 is the "Enter" key on the keyboard
             if (evt.keyCode === 13) this.addRunner();
         }.bind(this));
 
-        btnAdd.addEventListener('click', function() {
+        btnAdd.addEventListener('click', function () {
             btnAdd.disabled = false;
             btnStr.disabled = false;
             btnEnd.disabled = true;
             this.addRunner();
         }.bind(this));
 
-        btnStr.addEventListener('click', function(){
+        btnStr.addEventListener('click', function () {
             inputName.readOnly = true;
             btnAdd.disabled = true;
             btnStr.disabled = true;
@@ -49,7 +50,7 @@ class Application {
             this.startRace();
         }.bind(this));
 
-        btnEnd.addEventListener('click', function(){
+        btnEnd.addEventListener('click', function () {
             inputName.readOnly = false;
             btnAdd.disabled = false;
             btnEnd.disabled = true;
@@ -66,39 +67,38 @@ class Application {
         }
     }
 
-    updateDetails() {
+    updateDetails(runner) {
         const tablebodyEl = document.getElementById('tableBody');
 
-        this.race.runners.forEach(runner => {
-            let runnerRow = document.createElement('tr'),
-                runnerNameCell = document.createElement('td'),
-                runnerNameBtn = document.createElement('button'),
-                runnerLapCount = document.createElement('td'),
-                runnerTotalTime = document.createElement('td'),
-                runnerAverageTime = document.createElement('td'),
-                runnerLastLapTime = document.createElement('td');
+        let runnerRow = document.createElement('tr'),
+            runnerNameCell = document.createElement('td'),
+            runnerNameBtn = document.createElement('button'),
+            runnerLapCount = document.createElement('td'),
+            runnerTotalTime = document.createElement('td'),
+            runnerAverageTime = document.createElement('td'),
+            runnerLastLapTime = document.createElement('td');
 
-            runnerNameBtn.innerText = runner.name;
-            runnerLapCount.innerText = runner.lapCount;
-            runnerTotalTime.innerText = runner.totalDuration ? timeFormat(runner.totalDuration) : timeFormat(0);
-            runnerAverageTime.innerText = runner.avgLapTime ? timeFormat(runner.avgLapTime) : timeFormat(0);
-            runnerLastLapTime.innerText = runner.lastLapTime ? timeFormat(runner.lastLapTime) : timeFormat(0);
+        runnerNameBtn.innerText = runner.name;
+        runnerLapCount.innerText = runner.lapCount;
+        runnerTotalTime.innerText = runner.totalDuration ? timeFormat(runner.totalDuration) : timeFormat(0);
+        runnerAverageTime.innerText = runner.avgLapTime ? timeFormat(runner.avgLapTime) : timeFormat(0);
+        runnerLastLapTime.innerText = runner.lastLapTime ? timeFormat(runner.lastLapTime) : timeFormat(0);
 
-            runnerNameBtn.className = 'btn btn-warning';
-            runnerNameBtn.disabled = true;
-            runnerNameCell.appendChild(runnerNameBtn);
-            runnerRow.append([runnerNameCell, runnerLapCount, runnerTotalTime, runnerAverageTime, runnerLastLapTime]);
-            tablebodyEl.appendChild(runnerRow);
+        runnerNameBtn.className = 'btn btn-warning';
+        runnerNameBtn.disabled = true;
+        runnerNameCell.appendChild(runnerNameBtn);
+        runnerRow.appendChild(runnerNameCell);
+        runnerRow.appendChild(runnerLapCount);
+        runnerRow.appendChild(runnerTotalTime);
+        runnerRow.appendChild(runnerAverageTime);
+        runnerRow.appendChild(runnerLastLapTime);
+        tablebodyEl.appendChild(runnerRow);
 
-            runnerNameBtn.addEventListener('click', function () {
-                if (app.race.racing) {
-                    runner.finishLap();
-                    // upda
-                }
-            })
+        runnerNameBtn.addEventListener('click', function () {
+            if (app.race.racing) {
+                runner.finishLap();
+            }
         });
-
-
     }
 
     updateInfo() {
@@ -115,13 +115,12 @@ class Application {
 
     addRunner() {
         const runnerInput = document.getElementById('inputName');
+        const newRunner = new Runner(runnerInput.value);
 
         if (!this.race.Racing && runnerInput.value) {
-            this.race.runners.push(
-                new Runner(runnerInput.value)
-            );
+            this.race.runners.push(newRunner);
 
-            this.updateDetails()
+            this.updateDetails(newRunner);
             document.getElementById('startButton').disabled = false;
         }
 
@@ -149,8 +148,8 @@ class Race {
         this.raceWinner = {
             name: '',
             lapData: {
-                lapCount : '',
-                totalDuration : ''
+                lapCount: '',
+                totalDuration: ''
             }
         }
     }
@@ -202,8 +201,8 @@ class Race {
                 this.raceWinner = {
                     name: runner.name,
                     lapData: {
-                        lapCount : runner.lapCount,
-                        runDuration : runner.runDuration
+                        lapCount: runner.lapCount,
+                        runDuration: runner.runDuration
                     }
                 };
             } else if (runner.lapCount === this.raceWinner.lapData.lapCount) {
@@ -211,8 +210,8 @@ class Race {
                     this.raceWinner = {
                         name: runner.name,
                         lapData: {
-                            lapCount : runner.lapCount,
-                            runDuration : runner.runDuration
+                            lapCount: runner.lapCount,
+                            runDuration: runner.runDuration
                         }
                     };
                 }
@@ -269,13 +268,13 @@ class Runner {
      * @return {string}
      */
     get lastLapTime() {
-        return this.lapHistory[this.lapHistory.length - 1].time;
+        return this.lapHistory.length ? this.lapHistory[this.lapHistory.length - 1].time : 0;
     }
 
     /**
-    * Finds the fastest lap ran
-    * @return {object|undefined}
-    */
+     * Finds the fastest lap ran
+     * @return {object|undefined}
+     */
     get fastestLap() {
         const times = [];
         this.lapHistory.forEach(lap => {
